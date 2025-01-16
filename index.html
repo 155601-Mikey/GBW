@@ -609,6 +609,108 @@ footer {
   background: var(--shadow);
 }
 
+.settings-option {
+  margin-bottom: 2rem;
+}
+
+.settings-option h3 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.settings-option label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.settings-option select {
+  width: 100%;
+}
+
+.experiments-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.experiment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.experiment-info {
+  flex: 1;
+}
+
+.experiment-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.experiment-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
 /* Notification styles */
 .notification {
   position: fixed;
@@ -1376,7 +1478,35 @@ a:hover {
 
 <div id="notificationContainer"></div>
 
-<script>function showNotification(message, type = 'info') {
+<script>
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const themeToSet = savedTheme || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', themeToSet);
+  
+  // Update theme select in settings
+  const themeSelect = document.getElementById('themeSelect');
+  if (themeSelect) {
+    themeSelect.value = savedTheme || 'system';
+  }
+}
+
+function updateTheme() {
+  const themeSelect = document.getElementById('themeSelect');
+  const selectedTheme = themeSelect.value;
+  
+  if (selectedTheme === 'system') {
+    localStorage.removeItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    localStorage.setItem('theme', selectedTheme);
+    document.documentElement.setAttribute('data-theme', selectedTheme);
+  }
+}
+
+function showNotification(message, type = 'info') {
   const notification = document.createElement('div');
   notification.className = `notification ${type}`;
   notification.textContent = message;
@@ -1812,14 +1942,6 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('theme', newTheme);
 }
-function initTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-  if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }
-}
 function toggleSettings() {
   const settingsMenu = document.querySelector('.settings-menu');
   const overlay = document.querySelector('.settings-overlay');
@@ -1845,5 +1967,6 @@ document.addEventListener('DOMContentLoaded', () => {
     link.target = '_blank';
     link.rel = 'noopener';
   });
-});</script>
+});
+</script>
 </body></html>
