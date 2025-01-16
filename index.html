@@ -1,12 +1,12 @@
 <html><head><base href="/">
 <title>GitSights - GitHub Explorer</title>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" as="style">
 <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="GitSights - Explore GitHub repositories, users and trends with powerful insights and analytics">
 <meta name="theme-color" content="#0d47a1">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
 :root {
@@ -19,7 +19,7 @@
 }
 
 [data-theme="light"] {
-  --primary: #0d47a1;
+  --primary: var(--primary-light);
   --surface: #ffffff;
   --background: #f5f5f5;
   --text-primary: rgba(0, 0, 0, 0.87);
@@ -74,6 +74,8 @@ header {
   align-items: center;
   gap: 0.5rem;
   color: var(--text-primary);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 nav {
@@ -253,80 +255,86 @@ button:hover {
   transform: rotate(90deg);
 }
 
-.tabs {
+.result-header {
   display: flex;
-  gap: 2rem;
-  margin: 2rem 0;
-  background: var(--surface);
-  padding: 0.5rem;
-  border-radius: 16px;
-  box-shadow: 0 2px 4px var(--shadow);
-}
-
-.results {
-  display: grid;
+  align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.result-card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  animation: slideIn 0.3s ease-out forwards;
-  border-radius: 16px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  contain: content;
-  will-change: transform;
+.result-header a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.performance-mode * {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+.result-header h3 {
+  margin-bottom: 0.5rem; 
 }
 
-.performance-mode .result-card {
-  contain: strict;
+.result-header .user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-[data-theme="light"] .result-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.8) 100%
-  );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+.result-header .user-info img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
 }
 
-[data-theme="dark"] .result-card {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 30, 30, 0.9) 0%,
-    rgba(20, 20, 20, 0.8) 100%
-  );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.result-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+.result-header .card-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-self: start;
 }
 
 .stats {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  color: var(--text-secondary);
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stats .material-icons {
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+}
+
+.user-profile img.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.user-profile h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.user-profile a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.user-profile a:hover {
+  text-decoration: underline;
 }
 
 .loading {
@@ -377,225 +385,76 @@ select {
 
 .user-details {
   margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
-.user-details.expanded {
-  display: block;
-}
-
-.expand-btn {
   width: 100%;
-  text-align: center;
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  background: none;
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
 }
 
-.stat-item {
-  display: flex;
-  align-items: center;
-}
-
-.stat-dot {
-  margin: 0 0.5rem;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.1);
-  margin-right: 0.5rem;
-}
-
-.admin {
-  background-color: rgba(255, 0, 0, 0.1);
-}
-
-.hireable {
-  background-color: rgba(0, 255, 0, 0.1);
-}
-
-.bio {
-  margin-top: 0.5rem;
-}
-
-.experiment {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.experiment:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.experiment-info {
+.result-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  background: var(--surface);
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px var(--shadow);
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.expand-user-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.expand-user-btn:hover {
+  transform: scale(1.1);
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats .material-icons {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.repo-item {
+  position: relative;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
   margin-bottom: 1rem;
 }
 
-.experiment-label {
+.repo-item .card-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.repo-count {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.experiment-description {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-/* Switch styling */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--text-secondary);
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--primary);
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-.settings-menu {
-  width: 90vw;
-  max-width: 450px; 
-  overflow-y: auto;
-  max-height: 100vh;
-  right: -450px; 
-  width: min(450px, 90vw); 
-}
-
-.experiments-warning {
-  background: rgba(255, 193, 7, 0.1);
-  border-left: 4px solid #ffc107;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.performance-mode .result-card {
-  transition: none;
-  will-change: transform;
-}
-
-.performance-mode .animate-in {
-  animation-duration: 0.2s;
-}
-
-.highlight {
-  background: linear-gradient(120deg, rgba(41, 98, 255, 0.2) 0%, rgba(41, 98, 255, 0.1) 100%);
-  padding: 0.1em 0.2em;
-  border-radius: 3px;
-  font-weight: 500;
-}
-
-.performance-mode .highlight {
-  transition: none;
-}
-
-a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
-
-a:hover {
-  color: #1565c0; 
-  text-decoration: underline;
-}
-
-.action-link {
-  display: inline-flex;
-  align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.action-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
-  text-decoration: none;
-  background: var(--primary-dark);
-  color: white !important;
-}
-
-[data-theme="dark"] .action-link {
-  color: white !important;
-}
-
-[data-theme="dark"] .action-link:hover {
-  color: white !important;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
 }
 
 .footer-description {
@@ -661,12 +520,26 @@ footer {
 .user-stats {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   padding: 1rem;
   margin: 1rem 0;
   background: linear-gradient(to right, var(--primary) 0%, #64b5f6 100%);
   border-radius: 12px;
   color: white;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-item .material-icons {
+  font-size: 18px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .animated-icon {
@@ -801,7 +674,6 @@ footer {
 }
 
 .share-action-btn:hover {
-  background: none;
   transform: none;
   box-shadow: none;
 }
@@ -958,16 +830,17 @@ footer {
   gap: 4px;
 }
 
-.result-header {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-
-.result-header > div:first-child {
-  flex: 1;
-  min-width: 0; 
+.official-repo {
+  background: linear-gradient(135deg, #2196f3 0%, #0d47a1 100%);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .coming-soon-badge {
@@ -1066,6 +939,177 @@ footer {
   to { opacity: 1; }
 }
 
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #1565c0; 
+  text-decoration: underline;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.action-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+  text-decoration: none;
+  background: var(--primary-dark);
+  color: white !important;
+}
+
+[data-theme="dark"] .action-link {
+  color: white !important;
+}
+
+[data-theme="dark"] .action-link:hover {
+  color: white !important;
+}
+
+.website-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.website-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.repo-item {
+  position: relative;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 1rem;
+}
+
+.repo-item .card-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.repo-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+.highlight {
+  background: linear-gradient(120deg, rgba(41, 98, 255, 0.2) 0%, rgba(41, 98, 255, 0.1) 100%);
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.performance-mode .highlight {
+  transition: none;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #1565c0; 
+  text-decoration: underline;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.action-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+  text-decoration: none;
+  background: var(--primary-dark);
+  color: white !important;
+}
+
+[data-theme="dark"] .action-link {
+  color: white !important;
+}
+
+[data-theme="dark"] .action-link:hover {
+  color: white !important;
+}
+
+.website-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.website-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.repo-item {
+  position: relative;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 1rem;
+}
+
+.repo-item .card-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.repo-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
 .result-card p {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1100,13 +1144,12 @@ footer {
 [data-performance="true"] .material-icons {
   transition: none !important;
 }
-
 </style>
 </head>
 <body>
 <header>
   <nav>
-    <div class="logo">
+    <div class="logo" onclick="clearAll()">
       <span class="material-icons">insights</span>
       GitSights
     </div>
@@ -1127,19 +1170,19 @@ footer {
 
 <div class="container">
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('repos')">
+    <div class="tab active" onclick="switchTab(&apos;repos&apos;)">
       <span class="material-icons">folder</span>
       Repositories
     </div>
-    <div class="tab" onclick="switchTab('users')">
+    <div class="tab" onclick="switchTab(&apos;users&apos;)">
       <span class="material-icons">people</span>
       Users
     </div>
-    <div class="tab" onclick="switchTab('gists')">
+    <div class="tab" onclick="switchTab(&apos;gists&apos;)">
       <span class="material-icons">code</span>
       Gists
     </div>
-    <div class="tab" onclick="switchTab('bookmarks')">
+    <div class="tab" onclick="switchTab(&apos;bookmarks&apos;)">
       <span class="material-icons">bookmarks</span>
       Bookmarks
     </div>
@@ -1158,7 +1201,7 @@ footer {
   
   <div class="filters" id="repoFilters">
     <select id="language">
-      <option value="">All Languages</option>
+      <option value>All Languages</option>
       <option value="javascript">JavaScript</option>
       <option value="python">Python</option>
       <option value="java">Java</option>
@@ -1177,10 +1220,10 @@ footer {
     </select>
     
     <select id="stars">
-      <option value="">Any Stars</option>
-      <option value="1000">>1000 stars</option>
-      <option value="10000">>10000 stars</option>
-      <option value="50000">>50000 stars</option>
+      <option value>Any Stars</option>
+      <option value="1000">&gt;1000 stars</option>
+      <option value="10000">&gt;10000 stars</option>
+      <option value="50000">&gt;50000 stars</option>
     </select>
 
     <select id="sort">
@@ -1333,20 +1376,14 @@ footer {
 
 <div id="notificationContainer"></div>
 
-<script>
-function showNotification(message, type = 'info') {
+<script>function showNotification(message, type = 'info') {
   const notification = document.createElement('div');
   notification.className = `notification ${type}`;
   notification.textContent = message;
-  
   document.getElementById('notificationContainer').appendChild(notification);
-  
-  // Make notification visible
   setTimeout(() => {
     notification.style.opacity = '1';
   }, 100);
-
-  // Remove notification after delay
   setTimeout(() => {
     notification.style.opacity = '0';
     setTimeout(() => {
@@ -1354,95 +1391,103 @@ function showNotification(message, type = 'info') {
     }, 500);
   }, 3000);
 }
-
 function renderResults(items) {
   const results = document.getElementById('results');
+  const bookmarkIcon = 'bookmark_border';
   results.innerHTML = items.map(item => {
-    const isBookmarked = bookmarks.some(b => b.id === item.id);
-    const bookmarkIcon = isBookmarked ? 'bookmark' : 'bookmark_border';
-    
-    if (currentTab === 'users') {
+    const isOfficialRepo = item.html_url === 'https://github.com/DaDevMikey/GitHub-Insights';
+    if (item.type === 'User') {
       return `
         <div class="result-card">
           <div class="result-header">
-            <div>
-              <a href="${item.html_url}" target="_blank" rel="noopener">
-                <img src="${item.avatar_url}" alt="${item.login}" class="avatar">
-              </a>
-              <a href="${item.html_url}" target="_blank" rel="noopener">
-                ${item.login}
-              </a>
-              ${item.login === 'DaDevMikey' ? '<span class="creator-badge"><span class="material-icons">verified</span>Creator</span>' : ''}
+            <div class="user-profile">
+              <img src="${item.avatar_url}" alt="${item.login}" class="avatar">
+              <div>
+                <h3>
+                  <a href="${item.html_url}" target="_blank" rel="noopener">${item.login}</a>
+                </h3>
+              </div>
             </div>
             <div class="card-actions">
+              <button class="expand-user-btn" onclick="expandUserDetails('${item.login}')">
+                <span class="material-icons">expand_more</span>
+              </button>
               <button class="share-btn" onclick="shareItem(${JSON.stringify(item).replace(/"/g, '&quot;')})">
                 <span class="material-icons">share</span>
               </button>
               <button class="bookmark-btn" onclick="toggleBookmark(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                <span class="material-icons">${bookmarkIcon}</span>
+                <span class="material-icons">${bookmarks.some(b => b.id === item.id) ? 'bookmark' : bookmarkIcon}</span>
               </button>
             </div>
           </div>
-          <button class="expand-btn" onclick="expandUserDetails('${item.login}')">
-            <span class="material-icons">expand_more</span>
-            View Details
-          </button>
-          <div class="user-details"></div>
-        </div>
-      `;
-    } else {
-      // Repository or Gist display
-      return `
-        <div class="result-card">
-          <div class="result-header">
-            <div>
-              <h3>
-                <a href="${item.html_url}" target="_blank" rel="noopener">
-                  ${item.full_name || item.name}
-                </a>
-              </h3>
-              <p>${item.description || 'No description available'}</p>
-            </div>
-            <div class="card-actions">
-              <button class="share-btn" onclick="shareItem(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                <span class="material-icons">share</span>
-              </button>
-              <button class="bookmark-btn" onclick="toggleBookmark(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                <span class="material-icons">${bookmarkIcon}</span>
-              </button>
-            </div>
-          </div>
-          <div class="stats">
-            <span><span class="material-icons">star</span>${item.stargazers_count || 0}</span>
-            <span class="stat-dot">•</span>
-            <span><span class="material-icons">fork_right</span>${item.forks_count || 0}</span>
-            <span class="stat-dot">•</span>
-            <span><span class="material-icons">visibility</span>${item.watchers_count || 0}</span>
-            ${item.language ? `
-              <span class="stat-dot">•</span>
-              <span><span class="material-icons">code</span>${item.language}</span>
-            ` : ''}
-          </div>
+          <div class="user-details" id="user-details-${item.login}"></div>
         </div>
       `;
     }
+    const updatedDate = new Date(item.updated_at).toLocaleDateString();
+    return `
+      <div class="result-card">
+        <div class="result-header">
+          <div>
+            <h3>
+              <a href="${item.html_url}" target="_blank" rel="noopener">
+                ${item.name}
+                ${isOfficialRepo ? '<span class="official-repo">Official Repository</span>' : ''}
+              </a>
+            </h3>
+            ${item.owner ? `
+              <div class="user-info">
+                <img src="${item.owner.avatar_url}" alt="${item.owner.login}" width="24" height="24">
+                <a href="${item.owner.html_url}" target="_blank" rel="noopener">
+                  ${item.owner.login}
+                  ${item.owner.login === 'DaDevMikey' ? '<span class="creator-badge">Creator</span>' : ''}
+                </a>
+              </div>
+            ` : ''}
+            <p>${item.description || 'No description available'}</p>
+          </div>
+          <div class="card-actions">
+            ${item.homepage ? `
+              <a href="https://dadevmikey.github.io/redirect-confirmer/${encodeURIComponent(item.homepage)}" 
+                 target="_blank" rel="noopener" class="action-btn">
+                <span class="material-icons">language</span>
+              </a>
+            ` : ''}
+            <button class="share-btn" onclick="shareItem(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+              <span class="material-icons">share</span>
+            </button>
+            <button class="bookmark-btn" onclick="toggleBookmark(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+              <span class="material-icons">${bookmarks.some(b => b.id === item.id) ? 'bookmark' : bookmarkIcon}</span>
+            </button>
+          </div>
+        </div>
+        <div class="stats">
+          <span><span class="material-icons">star</span>${item.stargazers_count || 0}</span>
+          <span class="stat-dot">•</span>
+          <span><span class="material-icons">fork_right</span>${item.forks_count || 0}</span>
+          <span class="stat-dot">•</span>
+          <span><span class="material-icons">visibility</span>${item.watchers_count || 0}</span>
+          ${item.language ? `
+            <span class="stat-dot">•</span>
+            <span><span class="material-icons">code</span>${item.language}</span>
+          ` : ''}
+          <span class="stat-dot">•</span>
+          <span><span class="material-icons">update</span>${updatedDate}</span>
+        </div>
+      </div>
+    `;
   }).join('');
 }
-
 let currentTab = 'repos';
 let loading = false;
 let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-
-document.getElementById('searchInput').addEventListener('keypress', (e) => {
+document.getElementById('searchInput').addEventListener('keypress', e => {
   if (e.key === 'Enter') {
     search();
   }
 });
-
 function switchTab(tab) {
   currentTab = tab;
-  
-  // Update active tab styling
   document.querySelectorAll('.tab').forEach(t => {
     if (t.textContent.toLowerCase().includes(tab)) {
       t.classList.add('active');
@@ -1450,67 +1495,42 @@ function switchTab(tab) {
       t.classList.remove('active');
     }
   });
-
-  // Show/hide relevant filters
   const filters = document.getElementById('repoFilters');
   filters.style.display = tab === 'repos' ? 'flex' : 'none';
-
-  // Clear results
   const results = document.getElementById('results');
   results.innerHTML = '';
-
-  // If bookmarks tab, show bookmarks immediately
   if (tab === 'bookmarks') {
     showBookmarks();
   } else {
-    // If there's a search term, perform search with new tab
     const searchInput = document.getElementById('searchInput');
     if (searchInput.value.trim()) {
       search();
     }
   }
 }
-
 function highlightKeywords(query) {
   if (!document.getElementById('keywordHighlight').checked) return;
-  
   const results = document.getElementById('results');
   const words = query.toLowerCase().split(/\s+/);
-  
-  // Get all text nodes in the results
-  const walk = document.createTreeWalker(
-    results,
-    NodeFilter.SHOW_TEXT,
-    null,
-    false
-  );
-
+  const walk = document.createTreeWalker(results, NodeFilter.SHOW_TEXT, null, false);
   const nodesToHighlight = [];
   let node;
   while (node = walk.nextNode()) {
-    // Skip if parent is already a highlight or is a code element
-    if (node.parentNode.classList?.contains('highlight') || 
-        node.parentNode.tagName === 'CODE') {
+    if (node.parentNode.classList?.contains('highlight') || node.parentNode.tagName === 'CODE') {
       continue;
     }
-
     const text = node.textContent.toLowerCase();
     let shouldHighlight = false;
-    
-    // Check if any search word matches exactly
     for (const word of words) {
       if (text.includes(word)) {
         shouldHighlight = true;
         break;
       }
     }
-
     if (shouldHighlight) {
       nodesToHighlight.push(node);
     }
   }
-
-  // Replace text with highlighted version
   for (const node of nodesToHighlight) {
     const span = document.createElement('span');
     span.className = 'highlight';
@@ -1518,8 +1538,6 @@ function highlightKeywords(query) {
     node.parentNode.replaceChild(span, node);
   }
 }
-
-// Add showBookmarks function that uses renderResults instead of showResults
 function showBookmarks() {
   const results = document.getElementById('results');
   if (bookmarks.length === 0) {
@@ -1527,14 +1545,11 @@ function showBookmarks() {
     return;
   }
   renderResults(bookmarks);
-  // Highlight keywords if there's an active search
   const searchTerm = document.getElementById('searchInput').value.trim();
   if (searchTerm) {
     highlightKeywords(searchTerm);
   }
 }
-
-// Add toggleBookmark function
 function toggleBookmark(item) {
   const index = bookmarks.findIndex(b => b.id === item.id);
   if (index === -1) {
@@ -1545,17 +1560,12 @@ function toggleBookmark(item) {
     showNotification('Removed from bookmarks', 'info');
   }
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-  
-  // Re-render current view
   if (currentTab === 'bookmarks') {
     showBookmarks();
   } else {
-    // Re-render search results
     search();
   }
 }
-
-// Add shareItem function
 function shareItem(item) {
   const shareUrl = item.html_url;
   const sharePopup = document.createElement('div');
@@ -1572,13 +1582,10 @@ function shareItem(item) {
     </div>
   `;
   document.body.appendChild(sharePopup);
-  
   setTimeout(() => {
     sharePopup.style.opacity = '1';
   }, 100);
 }
-
-// Add copyToClipboard function
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     showNotification('Link copied to clipboard', 'success');
@@ -1587,36 +1594,48 @@ function copyToClipboard(text) {
     console.error('Failed to copy:', err);
   });
 }
-
 async function search() {
   if (loading) return;
-  
   const query = document.getElementById('searchInput').value.trim();
+  if (!query) {
+    try {
+      const response = await fetch('https://api.github.com/search/repositories?q=stars:>1000&sort=stars&order=desc&per_page=100');
+      const data = await response.json();
+      const randomRepos = [];
+      const items = data.items;
+      for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * items.length);
+        randomRepos.push(items[randomIndex]);
+        items.splice(randomIndex, 1);
+      }
+      renderResults(randomRepos);
+      return;
+    } catch (error) {
+      console.error('Error fetching random repos:', error);
+      showNotification('Failed to load random repositories', 'error');
+      return;
+    }
+  }
   if (!query) {
     showNotification('Please enter a search term', 'error');
     return;
   }
-  
   if (currentTab === 'bookmarks') {
     showBookmarks();
     return;
   }
-  
   loading = true;
   const results = document.getElementById('results');
   results.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Searching...</p></div>';
-  
   try {
     let endpoint;
     const language = document.getElementById('language').value;
     const stars = document.getElementById('stars').value;
     const sort = document.getElementById('sort').value;
-    
     let queryParams = `${query}`;
     if (language) queryParams += `+language:${language}`;
     if (stars) queryParams += `+stars:>=${stars}`;
-    
-    switch(currentTab) {
+    switch (currentTab) {
       case 'repos':
         endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(queryParams)}`;
         break;
@@ -1627,22 +1646,18 @@ async function search() {
         endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+fork:true+language:text`;
         break;
     }
-
     const response = await fetch(endpoint);
     if (!response.ok) {
       throw new Error(`GitHub API error: ${response.statusText || 'Failed to fetch'}`);
     }
-    
     const data = await response.json();
     const items = data.items || [];
-    
     if (items.length > 0) {
       renderResults(items);
-      highlightKeywords(query); // Highlight keywords after rendering results
+      highlightKeywords(query);
     } else {
       results.innerHTML = '<div class="loading">No results found</div>';
     }
-    
   } catch (error) {
     console.error('Search error:', error);
     showNotification(error.message || 'Search failed. Please try again.', 'error');
@@ -1651,7 +1666,6 @@ async function search() {
     loading = false;
   }
 }
-
 function clearSearch() {
   const input = document.getElementById('searchInput');
   input.value = '';
@@ -1659,105 +1673,177 @@ function clearSearch() {
   document.getElementById('results').innerHTML = '';
   document.querySelector('.clear-search').classList.remove('visible');
 }
-
 async function expandUserDetails(username) {
   try {
-    const userCard = document.querySelector(`.result-card a[href*="/${username}"]`).closest('.result-card');
-    const detailsSection = userCard.querySelector('.user-details');
-    const expandBtn = userCard.querySelector('.expand-btn');
-    
-    if (!detailsSection.classList.contains('expanded')) {
-      detailsSection.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading profile...</p></div>';
-      detailsSection.classList.add('expanded');
-      expandBtn.querySelector('.material-icons').textContent = 'expand_less';
+    const detailsSection = document.getElementById(`user-details-${username}`);
+    const expandBtn = document.querySelector(`.result-card a[href*="/${username}"]`).closest('.result-card').querySelector('.expand-user-btn .material-icons');
+    if (detailsSection.classList.contains('expanded')) {
+      detailsSection.classList.remove('expanded');
+      detailsSection.innerHTML = '';
+      expandBtn.textContent = 'expand_more';
+      return;
+    }
+    detailsSection.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading profile...</p></div>';
+    detailsSection.classList.add('expanded');
+    expandBtn.textContent = 'expand_less';
+    const [userDetails, repos, gists] = await Promise.all([fetch(`https://api.github.com/users/${username}`).then(r => r.json()), fetch(`https://api.github.com/users/${username}/repos?sort=stars&per_page=5`).then(r => r.json()), fetch(`https://api.github.com/users/${username}/gists`).then(r => r.json())]);
+    const totalStats = repos.reduce((acc, repo) => ({
+      stars: acc.stars + (repo.stargazers_count || 0),
+      forks: acc.forks + (repo.forks_count || 0),
+      watchers: acc.watchers + (repo.watchers_count || 0)
+    }), {
+      stars: 0,
+      forks: 0,
+      watchers: 0
+    });
+    const userStats = `
+      <div class="user-stats">
+        <div class="stat-item">
+          <span class="material-icons">star</span>
+          ${totalStats.stars} stars
+        </div>
+        <span class="stat-dot">•</span>
+        <div class="stat-item">
+          <span class="material-icons">people</span>
+          ${userDetails.followers} followers
+        </div>
+        <span class="stat-dot">•</span>
+        <div class="stat-item">
+          <span class="material-icons">person_add</span>
+          ${userDetails.following} following
+        </div>
+        <span class="stat-dot">•</span>
+        <div class="stat-item">
+          <span class="material-icons">folder</span>
+          ${userDetails.public_repos} repos
+        </div>
+        <span class="stat-dot">•</span>
+        <div class="stat-item">
+          <span class="material-icons">visibility</span>
+          ${totalStats.watchers} watchers
+        </div>
+      </div>
+    `;
+    detailsSection.innerHTML = `
+      <div class="user-profile-details">
+        ${userStats}
+        
+        <div class="user-badges">
+          ${userDetails.site_admin ? '<span class="badge admin">Admin</span>' : ''}
+          ${userDetails.hireable ? '<span class="badge hireable">Open to Work</span>' : ''}
+          ${userDetails.bio ? `<div class="bio">${userDetails.bio}</div>` : ''}
+        </div>
+        
+        <h3>Top Repositories</h3>
+        <div class="user-repos">
+          ${repos.map(repo => `
+            <div class="repo-item">
+              <h4>
+                <a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a>
+              </h4>
+              <p>${repo.description || 'No description available'}</p>
+              <div class="stats">
+                <span><span class="material-icons">star</span>${repo.stargazers_count || 0}</span>
+                <span class="stat-dot">•</span>
+                <span><span class="material-icons">fork_right</span>${repo.forks_count || 0}</span>
+                <span class="stat-dot">•</span>
+                <span><span class="material-icons">visibility</span>${repo.watchers_count || 0}</span>
+                ${repo.language ? `
+                  <span class="stat-dot">•</span>
+                  <span><span class="material-icons">code</span>${repo.language}</span>
+                ` : ''}
+                <span class="stat-dot">•</span>
+                <span><span class="material-icons">update</span>${new Date(repo.updated_at).toLocaleDateString()}</span>
+              </div>
+              <div class="card-actions">
+                ${repo.homepage ? `
+                  <a href="https://dadevmikey.github.io/redirect-confirmer/${encodeURIComponent(repo.homepage)}" 
+                     target="_blank" rel="noopener" class="action-btn">
+                    <span class="material-icons">language</span>
+                  </a>
+                ` : ''}
+                <button class="share-btn" onclick="shareItem(${JSON.stringify(repo).replace(/"/g, '&quot;')})">
+                  <span class="material-icons">share</span>
+                </button>
+                <button class="bookmark-btn" onclick="toggleBookmark(${JSON.stringify(repo).replace(/"/g, '&quot;')})">
+                  <span class="material-icons">${bookmarks.some(b => b.id === repo.id) ? 'bookmark' : 'bookmark_border'}</span>
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
 
-      const [userDetails, repos] = await Promise.all([
-        fetch(`https://api.github.com/users/${username}`).then(r => r.json()),
-        fetch(`https://api.github.com/users/${username}/repos?sort=stars&per_page=5`).then(r => r.json())
-      ]);
-
-      detailsSection.innerHTML = `
-        <div class="user-profile-details">
-          <div class="user-stats">
-            <div class="stat-item">
-              <span class="material-icons">people</span>
-              ${userDetails.followers} followers
-            </div>
-            <span class="stat-dot">•</span>
-            <div class="stat-item">
-              <span class="material-icons">person_add</span>
-              ${userDetails.following} following
-            </div>
-            <span class="stat-dot">•</span>
-            <div class="stat-item">
-              <span class="material-icons">visibility</span>
-              ${userDetails.public_gists} gists
-            </div>
-          </div>
-          
-          <div class="user-badges">
-            ${userDetails.site_admin ? '<span class="badge admin">Admin</span>' : ''}
-            ${userDetails.hireable ? '<span class="badge hireable">Open to Work</span>' : ''}
-            ${userDetails.bio ? `<div class="bio">${userDetails.bio}</div>` : ''}
-          </div>
-          
-          <h3>Top Repositories</h3>
-          <div class="user-repos">
-            ${repos.map(repo => `
+        ${gists.length > 0 ? `
+          <h3>Recent Gists</h3>
+          <div class="user-gists">
+            ${gists.slice(0, 5).map(gist => `
               <div class="repo-item">
-                <h4><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></h4>
-                <p>${repo.description || 'No description available'}</p>
+                <h4>
+                  <a href="${gist.html_url}" target="_blank" rel="noopener">
+                    ${Object.values(gist.files)[0]?.filename || 'Untitled Gist'}
+                  </a>
+                </h4>
+                <p>${gist.description || 'No description available'}</p>
                 <div class="stats">
-                  <span><span class="material-icons">star</span>${repo.stargazers_count}</span>
-                  <span class="stat-dot">•</span>
-                  <span><span class="material-icons">fork_right</span>${repo.forks_count}</span>
-                  <span class="stat-dot">•</span>
-                  <span><span class="material-icons">visibility</span>${repo.watchers_count}</span>
+                  <span><span class="material-icons">update</span>${new Date(gist.updated_at).toLocaleDateString()}</span>
+                </div>
+                <div class="card-actions">
+                  <button class="share-btn" onclick="shareItem(${JSON.stringify(gist).replace(/"/g, '&quot;')})">
+                    <span class="material-icons">share</span>
+                  </button>
+                  <button class="bookmark-btn" onclick="toggleBookmark(${JSON.stringify(gist).replace(/"/g, '&quot;')})">
+                    <span class="material-icons">${bookmarks.some(b => b.id === gist.id) ? 'bookmark' : 'bookmark_border'}</span>
+                  </button>
                 </div>
               </div>
             `).join('')}
           </div>
-        </div>
-      `;
-    } else {
-      detailsSection.classList.remove('expanded');
-      expandBtn.querySelector('.material-icons').textContent = 'expand_more';
-    }
+        ` : ''}
+      </div>
+    `;
   } catch (error) {
     console.error('Error expanding user details:', error);
     showNotification('Error loading user details', 'error');
   }
 }
-
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('theme', newTheme);
 }
-
 function initTheme() {
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
 }
-
 function toggleSettings() {
   const settingsMenu = document.querySelector('.settings-menu');
   const overlay = document.querySelector('.settings-overlay');
-  
   if (settingsMenu.classList.contains('open')) {
     settingsMenu.classList.remove('open');
     overlay.classList.remove('open');
   } else {
     settingsMenu.classList.add('open');
-    overlay.classList.add('open'); 
+    overlay.classList.add('open');
   }
 }
-
+function clearAll() {
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  search();
+}
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-});
-</script>
+  document.querySelectorAll('footer a').forEach(link => {
+    if (!link.href.includes('github.com') && !link.href.includes('githubinsights.vercel.app')) {
+      link.href = `https://dadevmikey.github.io/redirect-confirmer/${encodeURIComponent(link.href)}`;
+    }
+    link.target = '_blank';
+    link.rel = 'noopener';
+  });
+});</script>
 </body></html>
